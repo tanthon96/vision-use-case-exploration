@@ -1,0 +1,35 @@
+# Secrets
+.env
+.env.*
+!.env.example
+
+# Local tooling
+.claude/
+.DS_Store
+.vscode/
+.idea/
+
+# Python
+__pycache__/
+*.py[oc]
+.venv/
+venv/
+*.egg-info
+build/
+wheels/
+
+# Frontend
+node_modules/
+frontend/dist/
+
+# Runtime data / local DBs
+data/
+aug_data/
+*.db
+*.sqlite
+
+# Private datasets, analysis outputs, and scratch notebooks (never publish)
+*.xlsx
+*.xls
+*.ipynb
+backend/*.csv
