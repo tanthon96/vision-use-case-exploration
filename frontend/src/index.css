@@ -1,0 +1,86 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Light theme — warm parchment, ink-on-paper */
+    --background:           36 32% 96%;   /* warm off-white */
+    --foreground:           20 14% 12%;   /* near-black with warmth */
+    --surface:              0 0% 100%;
+    --surface-raised:       36 24% 99%;
+    --muted:                30 14% 92%;
+    --muted-foreground:     25 8% 42%;
+    --border:               30 12% 86%;
+    --primary:              16 84% 50%;   /* terracotta accent — not blue/purple */
+    --primary-foreground:   36 32% 98%;
+    --accent:               180 38% 32%;  /* deep teal as secondary */
+    --accent-foreground:    36 32% 98%;
+    --danger:               358 70% 52%;
+    --success:              152 50% 38%;
+    --shadow:               20 14% 12%;
+  }
+
+  .dark {
+    /* Dark theme — graphite + amber */
+    --background:           20 8% 8%;
+    --foreground:           36 16% 92%;
+    --surface:              22 8% 11%;
+    --surface-raised:       24 8% 14%;
+    --muted:                22 6% 18%;
+    --muted-foreground:     30 6% 64%;
+    --border:               22 6% 22%;
+    --primary:              22 92% 60%;   /* warm amber — distinct from blue */
+    --primary-foreground:   20 8% 8%;
+    --accent:               170 50% 50%;  /* mint accent */
+    --accent-foreground:    20 8% 8%;
+    --danger:               358 76% 60%;
+    --success:              152 56% 50%;
+    --shadow:               0 0% 0%;
+  }
+
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    font-feature-settings: 'ss01', 'cv01';
+  }
+  /* High-contrast focus ring */
+  :focus-visible {
+    @apply outline-none ring-2 ring-primary/60 ring-offset-2 ring-offset-background;
+  }
+}
+
+@layer components {
+  .input-sm {
+    @apply bg-surface border border-border rounded-soft px-2.5 py-1.5 text-xs text-foreground
+           placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary w-full;
+  }
+  .btn-primary {
+    @apply bg-primary text-primary-foreground rounded-soft px-3 py-1.5 text-xs font-medium
+           hover:opacity-90 active:opacity-80 disabled:opacity-40 disabled:cursor-not-allowed transition-opacity;
+  }
+  .btn-ghost {
+    @apply text-muted-foreground hover:text-foreground hover:bg-muted/60 rounded-soft px-2 py-1
+           text-xs transition-colors;
+  }
+  .panel {
+    @apply bg-surface border-border;
+  }
+  .chip {
+    @apply inline-flex items-center gap-1 rounded-sharp border border-border bg-surface-raised
+           px-1.5 py-0.5 text-[10px] font-mono text-muted-foreground;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--border));
+  border-radius: 4px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+::-webkit-scrollbar-thumb:hover { background: hsl(var(--muted-foreground) / 0.5); background-clip: padding-box; }
