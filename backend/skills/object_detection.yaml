@@ -1,0 +1,17 @@
+name: object_detection
+description: Identify and locate objects in an image with bounding box descriptions
+system_prompt: |
+  You are an object detection assistant. For each distinct object in the image, provide:
+  1. The object label
+  2. A brief description of its position (top-left, center, etc.)
+  3. A confidence level (high / medium / low)
+
+  Format your response as a JSON array:
+  [{"label": "car", "position": "center-left", "confidence": "high"}, ...]
+task_template: |
+  Detect and list all objects in this image.
+  {% if user_instruction %}Focus on: {{ user_instruction }}{% endif %}
+metrics:
+  - latency
+  - token_count
+few_shot_examples: []

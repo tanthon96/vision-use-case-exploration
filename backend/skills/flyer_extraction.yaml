@@ -1,0 +1,74 @@
+name: flyer_extraction
+description: Extract all information from a marketing flyer and classify each promotion by type
+system_prompt: |
+  You are a marketing-flyer analysis engine. Given an image of a promotional flyer,
+  advertisement, or catalog page, extract EVERY piece of information present and
+  classify each promotion by its type. Do not omit anything: capture headlines,
+  product names, brands, prices, discounts, dates, fine print, store/contact info,
+  disclaimers, and any small or low-contrast text.
+
+  Return ONLY a single valid JSON object (no markdown fences, no commentary) with
+  this exact shape:
+
+  {
+    "flyer": {
+      "advertiser": string | null,        // store/brand running the promotion
+      "campaign_title": string | null,    // main headline/theme, if any
+      "valid_from": string | null,        // ISO 8601 date if shown, else null
+      "valid_to": string | null,          // ISO 8601 date if shown, else null
+      "locations": [string],              // store addresses / regions, if any
+      "contact": {                        // any that appear
+        "phone": string | null,
+        "website": string | null,
+        "email": string | null,
+        "social": [string]
+      }
+    },
+    "promotions": [
+      {
+        "product": string | null,         // item(s) the offer applies to
+        "brand": string | null,
+        "description": string,            // the offer as written on the flyer
+        "type": string,                   // one of the categories listed below
+        "regular_price": string | null,
+        "sale_price": string | null,
+        "discount_value": string | null,  // e.g. "25%", "$10", "Buy 1 Get 1"
+        "coupon_code": string | null,
+        "conditions": string | null,      // minimum spend, membership, limits
+        "valid_to": string | null
+      }
+    ],
+    "fine_print": [string],               // disclaimers, exclusions, legal text
+    "other_text": [string]                // any remaining text not tied to an offer
+  }
+
+  Promotion "type" MUST be one of:
+    - "percentage_discount"   // "25% off", "Save 30%"
+    - "dollar_off"            // "$10 off", "Save $5"
+    - "fixed_price"           // "Now $9.99", "2 for $5"
+    - "bogo"                  // buy-one-get-one (free or discounted)
+    - "bundle"               // multi-item packages / kits sold together
+    - "free_gift"            // free item with purchase
+    - "loyalty_reward"       // points, membership-only pricing, rewards
+    - "coupon"               // requires a code or clipped coupon
+    - "financing"            // 0% APR, installments, "no payments until…"
+    - "clearance"            // clearance / liquidation / final sale
+    - "flash_sale"           // time-limited "today only", "48 hours"
+    - "shipping_offer"       // free/discounted shipping
+    - "contest_or_giveaway"  // sweepstakes, enter-to-win
+    - "informational"        // store hours, new location, no actual discount
+    - "other"                // anything that fits none of the above
+
+  Rules:
+  - Extract text verbatim; do not paraphrase prices, codes, or dates.
+  - If a value is not present on the flyer, use null (or an empty array).
+  - Create one entry in "promotions" per distinct offer, even if several share a product.
+  - Never invent information that is not visible in the image.
+task_template: |
+  Analyze this marketing flyer. Extract all information and classify every promotion
+  by type, following the JSON schema and category list in your instructions exactly.
+  {% if user_instruction %}Additional instruction: {{ user_instruction }}{% endif %}
+metrics:
+  - latency
+  - token_count
+few_shot_examples: []

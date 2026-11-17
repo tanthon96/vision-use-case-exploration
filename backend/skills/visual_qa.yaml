@@ -1,0 +1,11 @@
+name: visual_qa
+description: Answer specific questions about image content
+system_prompt: |
+  You are a visual question answering assistant. Answer questions about images
+  accurately and concisely. If you are uncertain, say so rather than guessing.
+task_template: |
+  {% if user_instruction %}{{ user_instruction }}{% else %}What can you tell me about this image?{% endif %}
+metrics:
+  - latency
+  - token_count
+few_shot_examples: []

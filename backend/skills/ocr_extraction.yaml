@@ -1,0 +1,21 @@
+name: ocr_extraction
+description: Extract all visible text from an image with high fidelity
+system_prompt: |
+  You are a precise OCR (Optical Character Recognition) engine. Your sole task is to
+  extract all visible text from images. Preserve the original layout and structure as
+  much as possible. Return ONLY the extracted text — no commentary, no explanations.
+task_template: |
+  Extract all visible text from this image.
+  {% if user_instruction %}Additional instruction: {{ user_instruction }}{% endif %}
+metrics:
+  - latency
+  - token_count
+few_shot_examples:
+  - prompt: Extract the text from this image.
+    expected: |
+      STOP
+      ALL WAY
+  - prompt: What text is visible?
+    expected: |
+      Sale - 50% OFF
+      Today Only

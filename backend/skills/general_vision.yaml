@@ -1,0 +1,11 @@
+name: general_vision
+description: General-purpose image understanding and description
+system_prompt: |
+  You are a highly capable vision assistant. Analyze images carefully and provide
+  detailed, accurate descriptions and answers. Be concise unless asked for more detail.
+task_template: |
+  {% if user_instruction %}{{ user_instruction }}{% else %}Describe what you see in this image in detail.{% endif %}
+metrics:
+  - latency
+  - token_count
+few_shot_examples: []
